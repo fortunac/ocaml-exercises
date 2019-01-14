@@ -12,9 +12,9 @@ module T (Ord: OrderedType) = struct
 
   type elt = Ord.t
 
-  type 'a t =
+  type t =
     | Null
-    | Node of 'a * 'a t * 'a t
+    | Node of elt * t * t
 
   let compare x y =
     match x, y with
