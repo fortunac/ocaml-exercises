@@ -8,7 +8,7 @@ module type OrderedType =
     val t_of_sexp: Ppx_sexp_conv_lib.Sexp.t -> t
   end
 
-module Tree (Ord: OrderedType) = struct
+module T (Ord: OrderedType) = struct
 
   type elt = Ord.t
 
@@ -51,29 +51,3 @@ module Tree (Ord: OrderedType) = struct
 
 end
 
-(* tests *)
-let () =
-  let module Integer = struct
-    type t = int
-    let compare = Pervasives.compare
-    let sexp_of_t t = string_of_int t |> Sexp.of_string
-    let t_of_sexp sexp = Sexp.to_string sexp |> int_of_string
-  end in
-
-  let module ST = Tree(String) in
-  let module IT = Tree(Integer) in
-  let module SS = Set.Make(String) in
-  let module IS = Set.Make(Integer) in
-
-  let tree1 = ST.empty |> ST.add "a" |> ST.add "b" |> ST.add "c" in
-  let tree2 = ST.empty |> ST.add "e" |> ST.add "d" |> ST.add "f" in
-  let tree3 = IT.empty |> IT.add  5  |> IT.add  4  |> IT.add  6  in
-  let tree4 = IT.empty |> IT.add  1  |> IT.add  2  |> IT.add  3  in
-
-  assert (ST.compare tree1 tree2 = -1);
-  assert (IT.compare tree3 tree4 = 1);
-
-  assert (ST.at_depth tree1 2 |> SS.elements = ["b"]);
-  assert (ST.at_depth tree2 2 |> SS.elements = ["d"; "f"]);
-  assert (IT.at_depth tree3 2 |> IS.elements = [4; 6]);
-  assert (IT.at_depth tree4 1 |> IS.elements = [1]);

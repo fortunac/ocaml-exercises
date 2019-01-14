@@ -15,7 +15,7 @@ module type OrderedType =
   end
 
 (** Binary tree over the order types *)
-module Tree :
+module T :
   functor (Ord : OrderedType) ->
     sig
       (** type of ordered elements *)
@@ -33,7 +33,7 @@ module Tree :
       (** adds an element into the tree in order *)
       val add : elt -> elt t -> elt t
 
-      (** a set of Ord.t at a certain depth of the tree *)
+      (** a set of elt at a certain depth of the tree *)
       val at_depth :
         elt t ->
         int ->
