@@ -21,7 +21,7 @@ module Make (Ord : Set.Elt) = struct
     | Node of elt * t * t
 
   let compare (x : t) (y : t) : int =
-    match (x, y) with
+    match x, y with
     | Null,           Null           -> 0
     | Null,           Node _         -> -1
     | Node _,         Null           -> 1
